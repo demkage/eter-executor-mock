@@ -1,6 +1,8 @@
 package com.eter.executor.mock.service.impl;
 
 import com.eter.executor.mock.domain.*;
+import com.eter.executor.mock.domain.recommendation.Category;
+import com.eter.executor.mock.domain.recommendation.Product;
 import com.eter.executor.mock.domain.recommendation.ProductRating;
 import com.eter.executor.mock.service.AnalysisService;
 import org.springframework.stereotype.Service;
@@ -13,38 +15,50 @@ import java.util.*;
 @Service
 public class AnalysisServiceImpl implements AnalysisService {
     @Override
-    public double predictForUserIdAndProductId(int userId, int productId) {
+    public double predictForUserIdAndProductId(String customer, int userId, int productId) {
         return 1.23;
     }
 
     @Override
-    public List<ProductRating> recommendProductsForUser(int userId, int num) {
+    public List<ProductRating> recommendProductsForUser(String customer, int userId, int num, boolean detailed) {
         List<ProductRating> productRatings = new ArrayList<>();
 
         for (int i = 0; i < num; ++i) {
-            productRatings.add(new ProductRating(userId + i, i / num));
+            ProductRating rating = new ProductRating(userId + i, i / num);
+
+            if(detailed) {
+                rating.setProductDetail(mockProduct(rating.getProduct()));
+            }
+
+            productRatings.add(rating);
         }
 
         return productRatings;
     }
 
     @Override
-    public List<ProductRating> topProducts(int num) {
+    public List<ProductRating> topProducts(String customer, int num, boolean detailed) {
         List<ProductRating> productRatings = new ArrayList<>();
 
         for (int i = 0; i < num; ++i) {
-            productRatings.add(new ProductRating(i * 24, i / num));
+            ProductRating rating = new ProductRating(i * 24, i / num);
+
+            if(detailed) {
+                rating.setProductDetail(mockProduct(rating.getProduct()));
+            }
+
+            productRatings.add(rating);
         }
-        return null;
+        return productRatings;
     }
 
     @Override
-    public double predictGroupForAge(int age) {
+    public double predictGroupForAge(String customer, int age) {
         return 2.0;
     }
 
     @Override
-    public GroupStatistic predictStatisticsByAge(List<Integer> ages) {
+    public GroupStatistic predictStatisticsByAge(String customer, List<Integer> ages) {
         GroupStatistic groupStatistic = new GroupStatistic();
         groupStatistic.setGroupsCount(4);
         Map<String, Double> groups = new HashMap<>();
@@ -66,7 +80,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
-    public GroupStatistic predictStatisticsByGender(List<String> genders) {
+    public GroupStatistic predictStatisticsByGender(String customer, List<String> genders) {
         GroupStatistic groupStatistic = new GroupStatistic();
         groupStatistic.setGroupsCount(2);
         Map<String, Double> groups = new HashMap<>();
@@ -84,7 +98,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
-    public List<SaleResult> predictSales(List<SaleData> salesData) {
+    public List<SaleResult> predictSales(String customer, List<SaleData> salesData) {
         List<SaleResult> saleResults = new ArrayList<>();
 
         Map<Integer, Double> sales = new HashMap<>();
@@ -105,7 +119,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
-    public List<InventoryResult> predictInventory(List<InventoryData> inventoryData) {
+    public List<InventoryResult> predictInventory(String customer, List<InventoryData> inventoryData, boolean detailed) {
         List<InventoryResult> inventoryResults = new ArrayList<>();
 
         Map<Integer, Double> scores = new HashMap<>();
@@ -123,9 +137,68 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         for (InventoryData data : inventoryData) {
             Optional<Double> score = Optional.ofNullable(scores.get(data.getLasSaleDayAgo()));
-            inventoryResults.add(new InventoryResult(data.getProductId(), score.orElse(0.34)));
+            InventoryResult result = new InventoryResult(data.getProductId(), score.orElse(0.34));
+            result.setProductDetail(mockProduct(result.getProductId()));
+            inventoryResults.add(result);
         }
 
         return inventoryResults;
+    }
+
+    @Override
+    public GroupStatistic predictStatisticsByAge(String customer) {
+        GroupStatistic groupStatistic = new GroupStatistic();
+        groupStatistic.setGroupsCount(4);
+        Map<String, Double> groups = new HashMap<>();
+        Map<String, Double> centers = new HashMap<>();
+
+        groups.put("0", 0.23684210526315788);
+        groups.put("1", 0.2894736842105263);
+        groups.put("2", 0.13157894736842105);
+        groups.put("3", 0.34210526315789475);
+
+        centers.put("0", 55.24603174603174);
+        centers.put("1", 22.110726643598618);
+        centers.put("2", 44.682403433476395);
+        centers.put("3", 34.075221238938056);
+
+        groupStatistic.setGroups(groups);
+        groupStatistic.setCenters(centers);
+        return groupStatistic;
+    }
+
+    @Override
+    public GroupStatistic predictStatisticsByGender(String customer) {
+        GroupStatistic groupStatistic = new GroupStatistic();
+        groupStatistic.setGroupsCount(2);
+        Map<String, Double> groups = new HashMap<>();
+        Map<String, Double> centers = new HashMap<>();
+
+        groups.put("0", 0.5405405405405406);
+        groups.put("1", 0.4594594594594595);
+
+        centers.put("0", 0.0);
+        centers.put("1", 1.0);
+
+        groupStatistic.setGroups(groups);
+        groupStatistic.setCenters(centers);
+        return groupStatistic;
+    }
+
+    private Product mockProduct(long id) {
+        Product product = new Product();
+        product.setId(id);
+        product.setName("mock");
+        product.setPrice(22.3);
+        product.setStock(22);
+
+        Category category = new Category();
+        category.setId(id);
+        category.setName("mockCategory");
+        category.setDescription("mockDescription daksljakln anj knajk najksn ak");
+
+        product.setCategory(category);
+
+        return product;
     }
 }

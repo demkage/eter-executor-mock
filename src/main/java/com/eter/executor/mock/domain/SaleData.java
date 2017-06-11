@@ -1,7 +1,7 @@
 package com.eter.executor.mock.domain;
 
 /**
- * Created by rusifer on 6/9/17.
+ * Created by rusifer on 5/20/17.
  */
 public class SaleData {
     private boolean promo;

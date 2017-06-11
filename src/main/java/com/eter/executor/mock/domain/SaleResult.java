@@ -3,9 +3,9 @@ package com.eter.executor.mock.domain;
 import java.io.Serializable;
 
 /**
- * Created by rusifer on 6/9/17.
+ * Created by rusifer on 5/21/17.
  */
-public class SaleResult implements Serializable {
+public class SaleResult implements Serializable{
     private int dayOfWeek;
     private int dayOfMonth;
     private double sales;

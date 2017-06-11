@@ -1,13 +1,18 @@
 package com.eter.executor.mock.domain;
 
+import com.eter.executor.mock.domain.recommendation.Product;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 /**
- * Created by rusifer on 6/9/17.
+ * Created by abosii on 5/30/2017.
  */
 public class InventoryResult implements Serializable {
     private long productId;
     private double score;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Product productDetail;
 
     public InventoryResult() {
     }
@@ -31,6 +36,14 @@ public class InventoryResult implements Serializable {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public void setProductDetail(Product productDetail) {
+        this.productDetail = productDetail;
+    }
+
+    public Product getProductDetail() {
+        return productDetail;
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.eter.executor.mock.domain;
 import java.io.Serializable;
 
 /**
- * Created by rusifer on 6/9/17.
+ * Created by abosii on 5/30/2017.
  */
 public class InventoryData implements Serializable {
     private int lasSaleDayAgo;

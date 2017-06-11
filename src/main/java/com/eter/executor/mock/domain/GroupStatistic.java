@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by rusifer on 6/9/17.
+ * Created by rusifer on 5/21/17.
  */
 public class GroupStatistic implements Serializable {
     private Map<String, Double> groups = new HashMap<>();

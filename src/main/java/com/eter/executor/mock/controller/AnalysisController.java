@@ -29,7 +29,7 @@ public class AnalysisController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return analysisService.predictForUserIdAndProductId(userId, productId);
+        return analysisService.predictForUserIdAndProductId("none", userId, productId);
     }
 
     @RequestMapping("/als/recommend/user/{userId}")
@@ -39,7 +39,7 @@ public class AnalysisController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return analysisService.recommendProductsForUser(userId, 5);
+        return analysisService.recommendProductsForUser("none", userId, 5, false);
     }
 
     @RequestMapping("/als/recommend/user/{userId}/{num}")
@@ -50,7 +50,7 @@ public class AnalysisController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return analysisService.recommendProductsForUser(userId, num);
+        return analysisService.recommendProductsForUser("none", userId, num, false);
     }
 
     @RequestMapping("/als/top/{num}")
@@ -60,7 +60,7 @@ public class AnalysisController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return analysisService.topProducts(num);
+        return analysisService.topProducts("none", num, false);
     }
 
     @RequestMapping("/kmean/age/group/{age}")
@@ -71,7 +71,7 @@ public class AnalysisController {
             e.printStackTrace();
         }
 
-        return analysisService.predictGroupForAge(age);
+        return analysisService.predictGroupForAge("none", age);
     }
 
     @RequestMapping(value = "/kmean/age/statistic", method = RequestMethod.POST)
@@ -82,7 +82,7 @@ public class AnalysisController {
             e.printStackTrace();
         }
 
-        return analysisService.predictStatisticsByAge(ages);
+        return analysisService.predictStatisticsByAge("none", ages);
     }
 
     @RequestMapping(value = "/kmean/gender/statistic", method = RequestMethod.POST)
@@ -93,7 +93,7 @@ public class AnalysisController {
             e.printStackTrace();
         }
 
-        return analysisService.predictStatisticsByGender(genders);
+        return analysisService.predictStatisticsByGender("none", genders);
     }
 
     @RequestMapping(value = "/sales", method = RequestMethod.POST)
@@ -104,7 +104,7 @@ public class AnalysisController {
             e.printStackTrace();
         }
 
-        return analysisService.predictSales(saleData);
+        return analysisService.predictSales("none", saleData);
     }
 
     @RequestMapping(value = "/invetory", method = RequestMethod.POST)
@@ -115,6 +115,6 @@ public class AnalysisController {
             e.printStackTrace();
         }
 
-        return analysisService.predictInventory(inventories);
+        return analysisService.predictInventory("none", inventories, false);
     }
 }
